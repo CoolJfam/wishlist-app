@@ -1,4 +1,11 @@
-.item {
+.item-list {
   padding: 50px;
   margin: 75px;
+}
+
+.item {
+  padding: 40px;
+  margin: 50px;
+  margin-top: 0;
+  display: inline-block;
 }

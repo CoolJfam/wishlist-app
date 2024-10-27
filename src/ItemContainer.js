@@ -7,8 +7,7 @@ function ItemContainer() {
   return (
     <>
       <div data-testid="item-container" className="container">
-        <Item name="Cool toy" price="$12" link="link" />
-        <Item name="phone" price="$100" link="link" />
+        <Item />
       </div>
       <div>
         <AddItem />

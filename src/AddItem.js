@@ -3,10 +3,15 @@ import Modal from "react-modal";
 import { IconButton } from "@mui/material";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import { useItems } from "./ItemContext";
 import "./AddItem.css";
 
 function AddItem(props) {
   const [ModalShowing, setModalShowing] = useState(false);
+  const [text, setText] = useState("");
+  const [price, setPrice] = useState(0);
+  const [link, setLink] = useState("");
+  const { addItem } = useItems();
 
   const handleModal = () => {
     setModalShowing(!ModalShowing);
@@ -14,8 +19,20 @@ function AddItem(props) {
 
   const handleSave = (e) => {
     e.preventDefault();
+    if (!text.trim() || isNaN(price) || !link.trim()) return;
     handleModal();
-    alert("This item is now saved");
+    addItem(text, price, link);
+    setText("");
+    setPrice(0);
+    setLink("");
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    handleModal();
+    setText("");
+    setPrice(0);
+    setLink("");
   };
 
   return (
@@ -42,18 +59,44 @@ function AddItem(props) {
           <div className="modal-content">
             <form>
               <label htmlFor="item-name">Item Name: </label>
-              <input type="text" id="item-name"></input>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setText(e.target.value);
+                }}
+                value={text}
+                id="item-name"
+                data-testid="item-name"
+              ></input>
               <br />
-              <label htmlFor="item-price">Item Price: </label>
-              <input type="number" id="item-price"></input>
+              <label htmlFor="item-price">Item Price: $</label>
+              <input
+                type="number"
+                onChange={(e) => {
+                  setPrice(parseFloat(e.target.value) || 0);
+                }}
+                value={price}
+                id="item-price"
+                data-testid="item-price"
+              ></input>
               <br />
               <label htmlFor="item-link">Item Link: </label>
-              <input type="text" id="item-link"></input>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setLink(e.target.value);
+                }}
+                value={link}
+                id="item-link"
+                data-testid="item-link"
+              ></input>
               <br />
-              <button onClick={handleSave}>Save</button>
+              <button type="submit" onClick={handleSave}>
+                Save
+              </button>
             </form>
 
-            <IconButton data-testId="cancel-save-btn" onClick={handleModal}>
+            <IconButton data-testid="cancel-save-btn" onClick={handleCancel}>
               <CancelRoundedIcon color="error" />
             </IconButton>
           </div>
