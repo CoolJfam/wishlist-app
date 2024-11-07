@@ -7,19 +7,27 @@ export function ItemProvider({ children }) {
   const [items, setItems] = useState([]);
 
   const addItem = (text, price, link) => {
-    debugger
     const newItem = { text, price, link, id: itemId++ };
     setItems([...items, newItem]);
   };
 
   const deleteItem = (id) => {
-    debugger
     const newItems = items.filter((_, i) => i !== id);
     setItems(newItems);
   };
 
+  const updateItem = (newItem) => {
+    const newItems = items.map((item) => {
+      if (newItem.id === item.id) {
+        return newItem;
+      }
+      return item;
+    });
+    setItems(newItems);
+  };
+
   return (
-    <ItemContext.Provider value={{ items, addItem, deleteItem }}>
+    <ItemContext.Provider value={{ items, addItem, deleteItem, updateItem }}>
       {children}
     </ItemContext.Provider>
   );
